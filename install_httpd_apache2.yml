@@ -1,0 +1,30 @@
+---
+
+- hosts: all
+  become: true
+  tasks:
+
+  - name: update repository index
+    yum:
+     update_cache: yes
+
+  - name: install httpd package
+    yum:
+      name: httpd
+      state: latest
+
+  - name: install php 
+    yum:
+      name: php
+      state: latest
+
+  - name: install apache2 package
+    apt:
+      name: apache2
+      state: latest
+
+  - name: install php on Ubuntu
+    apt:
+      name: libapache2-mod-php
+      state: latest
+
