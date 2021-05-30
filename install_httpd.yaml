@@ -6,14 +6,38 @@
 
   - name: update repository index
     yum:
-      update_cache: yes
+     update_cache: yes
+    when: ansible_distribution == "CentOS"  
 
   - name: install httpd package
     yum:
       name: httpd
       state: latest
+    when: ansible_distribution == "CentOS"
 
-  - name: install sysstat package
+  - name: install php 
     yum:
-      name: sysstat
+      name: php
       state: latest
+    when: ansible_distribution == "CentOS"
+
+
+## Condition to install and update cache on Ubuntu OS.
+
+  - name: Update repository index
+    apt:
+     update_cache: yes
+    when: ansible_distribution == "Ubuntu"
+
+  - name: install apache2 package
+    apt:
+      name: apache2
+      state: latest
+    when: ansible_distribution == "Ubuntu"
+
+  - name: install php on Ubuntu
+    apt:
+      name: libapache2-mod-php
+      state: latest
+    when: ansible_distribution == "Ubuntu"
+
