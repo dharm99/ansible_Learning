@@ -1,0 +1,10 @@
+---
+
+- hosts: all
+  become: true
+  tasks:
+  
+  - name: installing package doesnot exist
+    yum: 
+     name: xyz-packge
+
