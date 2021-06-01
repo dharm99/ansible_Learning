@@ -21,23 +21,20 @@
       state: latest
     when: ansible_distribution == "CentOS"
 
-
 ## Condition to install and update cache on Ubuntu OS.
-
-  - name: Update repository index
+  - name: update repository index
     apt:
-     update_cache: yes
+      update_cache: yes
     when: ansible_distribution == "Ubuntu"
-
+        
   - name: install apache2 package
     apt:
       name: apache2
       state: latest
     when: ansible_distribution == "Ubuntu"
 
-  - name: install php on Ubuntu
+  - name: install php package
     apt:
-      name: libapache2-mod-php
+      name: 
       state: latest
     when: ansible_distribution == "Ubuntu"
-
