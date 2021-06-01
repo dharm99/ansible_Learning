@@ -1,0 +1,92 @@
+---
+
+- hosts: all
+  become: true
+  tasks:
+
+  - name: update repository index
+    tags: always    # since, we wanted to run it always regardless of any tags.
+    yum:
+     update_cache: yes
+     update_only: yes
+    when: ansible_distribution == "CentOS"  
+
+  - name: install httpd and php package
+    tags: apache, CentOS, httpd, php
+    yum:
+      name:
+       - httpd
+       - php
+      state: latest
+    when: ansible_distribution == "CentOS"
+
+  - name: httpd start (CentOS)
+    tags: centos, httpd, apache
+    service:
+      name: httpd
+      state: started
+      enabled: yes
+    when: ansible_distribution == "CentOS"
+
+  - name: Update repository index
+    tags: always
+    apt:
+     update_cache: yes
+     upgrade: dist
+    when: ansible_distribution == "Ubuntu"
+
+  - name: install apache2 package
+    tags: apache, apache2, Ubuntu, php
+    apt:
+      name: 
+       - apache2
+       - libapache2-mod-php
+      state: latest
+    when: ansible_distribution == "Ubuntu"
+
+  - name: change e-mail id from configuration files 
+    tags: centOS, apache, httpd
+    lineinfile:
+      path: /etc/httpd/conf/httpd.conf
+      regexp: '^ServerAdmin'
+      line: ServerAdmin someone@somewhere.net
+    when: ansible_distribution == "CentOS"
+    register: httpd     # this is only a variable used to store value of change and if value is acutally change below step will perform.
+
+
+  - name: httpd restart (CentOS) after configuration change
+    tags: centos, httpd, apache
+    service:
+      name: httpd
+      state: started
+    when: httpd.changed          # Here httpd is a variable define above. when this variable will have any change captured httpd will restart. and no need to define distribution because this setup is done for centos only.
+
+- hosts: db_servers
+  become: true
+  tasks:
+  - name: install mariadb on DB servers
+    tags: db, mariadb, 
+    yum:
+      name: mariadb
+      state: latest
+    when: ansible_distribution == "CentOS"
+
+  - name: copy file from source to destination
+    tags: apache, apache2, html
+    copy:
+      src: file/site.html   # no need to put complete file path. here it will pick the file name automatically
+      dest: /var/www/html/index.html
+      owner: root
+      group: root
+      mode: 0644
+
+- hosts: file_servers
+  become: true
+  tasks:
+  - name: install samba pkg on file servers
+    tags: samba, CentOS
+    yum:
+      name: samba
+      state: latest
+    when: ansible_distribution == "CentOS"
+
