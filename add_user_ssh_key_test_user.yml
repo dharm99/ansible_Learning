@@ -1,0 +1,19 @@
+---
+
+- hosts: all
+  become: true
+  tasks:
+
+  - name: update repository index
+    tags: always
+    yum:
+      update_cache: yes
+    when: ansible_distribution == "CentOS"
+
+## This below part is always configured in this yaml as it is already present in our bootstrap file. for key management. or in case we want to hange in the key, we can do it from this place instead of running bootstrap file. 
+  - name: copy SSH for test_user 
+    tags: always
+    authorized_key:
+     user: test_user
+     key: "ssh-ed25519 AASDSAAC3NzaC1lZDI1NTE5AAAAILbrN5h0evHn3EjZFiUtVTG2aYVNdHAjH1Q5VSgyMZbX ansible"
+
