@@ -1,0 +1,1 @@
+test_user ALL=(ALL)  NOPASSWD: ALL
