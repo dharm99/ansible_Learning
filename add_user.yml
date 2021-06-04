@@ -1,0 +1,46 @@
+---
+
+- hosts: all
+  become: true
+  tasks:
+
+  - name: update repository indexi
+    tags: repository
+    yum:
+     update_cache: yes
+    when: ansible_distribution == "CentOS"  
+
+  - name: add common user to all servers
+    tags: always
+    user: 
+     name: ops_user
+     group: root
+
+
+- hosts: db_servers
+  become: true
+  tasks:
+  - name: install mariadb on DB servers
+    tags: db,mariaDB,centOS
+    yum:
+      name: mariadb
+      state: latest
+    when: ansible_distribution == "CentOS"
+
+  - name: add db user to DB servers
+    tags: always
+    user:
+     name: db_user
+     group: root
+       
+
+- hosts: web_servers
+  become: true
+  tasks:
+
+  - name: add app user 
+    tags: always
+    user:
+     name: app_user
+     group: root
+
