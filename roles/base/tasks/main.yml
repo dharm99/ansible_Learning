@@ -1,0 +1,7 @@
+- name: copy SSH for test_user
+  tags: always
+  authorized_key:
+    user: test_user
+    key: "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILbrN5h0evHn3EjZFiUtVTG2aYVNdHAjH1Q5VSgyMZbX ansible"
+
+

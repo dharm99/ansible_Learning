@@ -1,0 +1,12 @@
+- name: install unzip package
+  package:
+    name: unzip
+
+- name: unarchieve and install teraform
+  unarchive:
+    src: https://releases.hashicorp.com/terraform/0.15.4/terraform_0.15.4_linux_amd64.zip
+    dest: /usr/local/bin
+    remote_src: yes
+    owner: root
+    group: root
+    mode: 0755

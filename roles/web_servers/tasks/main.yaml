@@ -1,0 +1,19 @@
+- name: install httpd and php package
+  tags: httpd, apache, centOS
+  package:
+    name: 
+     - httpd
+     - php
+    state: latest
+    enabled: yes
+  when: ansible_distribution == "centOS"
+
+
+- name: install apache2 and php package
+  package:
+    name: 
+     - apache2
+     - apache2-mod-php
+    state: latest
+    enabled: yes
+  when: ansible_distribution == "Ubuntu"
