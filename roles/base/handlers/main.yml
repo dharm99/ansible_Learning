@@ -1,0 +1,4 @@
+- name: restart_sshd    # same name as it is in main file 
+  service:  
+   name: sshd
+   state: restarted
