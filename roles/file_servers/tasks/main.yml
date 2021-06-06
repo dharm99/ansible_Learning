@@ -3,13 +3,3 @@
   yum:
    name: samba
    state: latest
-  when: ansible_distribution == "centOS"
-
-- name: install samba package
-  tags: samba, ubuntu
-  apt:
-   name: samba
-   state: latest
-  when: ansible_distribution == "Ubuntu"
-
-
