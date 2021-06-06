@@ -2,18 +2,39 @@
   tags: httpd, apache, centOS
   package:
     name: 
-     - httpd
-     - php
+     - "{{ apache_package_name }}"
+     - "{{ php_package_name }}"
     state: latest
-    enabled: yes
-  when: ansible_distribution == "centOS"
 
+- name: service start
+  tags: httpd, apache
+  service:
+     name: "{{ apache_service }}"
+     state: started
+     enabled: yes
 
-- name: install apache2 and php package
-  package:
-    name: 
-     - apache2
-     - apache2-mod-php
-    state: latest
-    enabled: yes
-  when: ansible_distribution == "Ubuntu"
+- name: change e-mail id from configuration files
+  tags: centOS, apache, httpd
+  lineinfile:
+    path: /etc/httpd/conf/httpd.conf
+    regexp: '^ServerAdmin'
+    line: ServerAdmin someone@somewhere.com
+  when: ansible_distribution == "CentOS"
+  notify: apache_restart        # this is now change from register to notify to use handler.
+
+# THis below section will be removed from here and will create a hangdle for this operations.
+#- name: restart httpd service
+# tags: httpd, apache, centOS
+# service:
+#  name: "{{ apache_service }}"
+#  state: restarted
+#  when: apache.changed
+
+- name: copy file from source to destination
+  tags: apache, apache2, html
+  copy:
+    src: file/site.html   # no need to put complete file path. here it will pick the file name automatically
+    dest: /var/www/html/index.html
+    owner: root
+    group: root
+    mode: 0644

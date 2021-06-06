@@ -1,0 +1,4 @@
+- name: apache_restart    # this name will be kept same as in the notify part i.e. apache_restart
+  service: 
+   name: "{{ apache_service }}"
+   state: restarted
